@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="ASCII"?>
+<sdkproject:SdkProject xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sdkproject="http://www.xilinx.com/sdkproject" name="xuartns550_hello_world_example_1" location="F:/WorkProject/prj11_autofocus/vitis/xuartns550_hello_world_example_1" platform="E:/prj11_autofocus/vitis/Prj_platform/export/Prj_platform/Prj_platform.xpfm" platformUID="xilinx:::0.0(custom)" systemProject="xuartns550_hello_world_example_1_system" sysConfig="Prj_platform" runtime="C/C++" cpu="standalone_domain" cpuInstance="ps7_cortexa9_0" os="standalone" dimmRepoPath="" mssSignature="8828b750b19dc97a3b6a7178e8e102ee">
+  <configuration name="Debug" id="xilinx.gnu.armv7.exe.debug.690679858" dirty="true">
+    <configBuildOptions xsi:type="sdkproject:SdkOptions"/>
+    <lastBuildOptions xsi:type="sdkproject:SdkOptions"/>
+  </configuration>
+  <configuration name="Release" id="xilinx.gnu.armv7.exe.release.1808185024">
+    <configBuildOptions xsi:type="sdkproject:SdkOptions"/>
+    <lastBuildOptions xsi:type="sdkproject:SdkOptions"/>
+  </configuration>
+  <template appTemplateName="empty_application"/>
+</sdkproject:SdkProject>

@@ -1,0 +1,29 @@
+2024-08-05T17:51:12.462451300255-17:51:12 **** Incremental Build of configuration Release for project xuartns550_hello_world_example_1 ****
+000-make all 
+000-make --no-print-directory pre-build
+000-a9-linaro-pre-build-step
+000-' '
+000-make --no-print-directory main-build
+000-'Building file: ../src/xuartns550_main.c'
+000-'Invoking: ARM v7 gcc compiler'
+000-arm-none-eabi-gcc -Wall -O2 -c -fmessage-length=0 -MT"src/xuartns550_main.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -IE:/prj11_autofocus/vitis/Prj_platform/export/Prj_platform/sw/Prj_platform/standalone_domain/bspinclude/include -MMD -MP -MF"src/xuartns550_main.d" -MT"src/xuartns550_main.o" -o "src/xuartns550_main.o" "../src/xuartns550_main.c"
+000-../src/xuartns550_main.c: In function 'UartNs550MultiFunction':
+000/xuartns550_hello_world_example_1/src/xuartns550_main.c143-1-1unused variable 'sendbuf' [-Wunused-variable]1-../src/xuartns550_main.c:143:13: warning: unused variable 'sendbuf' [-Wunused-variable]
+000-  143 |         u8  sendbuf[5]={'$',' ',2,' ','b'};
+000-      |             ^~~~~~~
+000-'Finished building: ../src/xuartns550_main.c'
+000-' '
+000-'Building target: xuartns550_hello_world_example_1.elf'
+000-'Invoking: ARM v7 gcc linker'
+000-arm-none-eabi-gcc -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -Wl,-build-id=none -specs=Xilinx.spec -Wl,-T -Wl,../src/lscript.ld -LE:/prj11_autofocus/vitis/Prj_platform/export/Prj_platform/sw/Prj_platform/standalone_domain/bsplib/lib -o "xuartns550_hello_world_example_1.elf"  ./src/I2C_func.o ./src/xuartns550_main.o   -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
+000-'Finished building target: xuartns550_hello_world_example_1.elf'
+000-' '
+000-'Invoking: ARM v7 Print Size'
+000-arm-none-eabi-size xuartns550_hello_world_example_1.elf  |tee "xuartns550_hello_world_example_1.elf.size"
+000-   text	   data	    bss	    dec	    hex	filename
+000-  40227	   1240	  23080	  64547	   fc23	xuartns550_hello_world_example_1.elf
+000-'Finished building: xuartns550_hello_world_example_1.elf.size'
+000-' '
+00255-
+17:51:13 Build Finished (took 922ms)
+

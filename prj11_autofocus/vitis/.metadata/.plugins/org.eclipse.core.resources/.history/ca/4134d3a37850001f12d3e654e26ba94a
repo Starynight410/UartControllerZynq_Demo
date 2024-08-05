@@ -1,0 +1,22 @@
+#ifndef SRC_USER_UART_H_
+#define SRC_USER_UART_H_
+
+/***************************** Include Files *********************************/
+#include "xparameters.h"
+#include "xuartps.h"
+#include "xil_printf.h"
+#include "sleep.h"
+
+
+/**************************** Constant Define ********************************/
+#define UART1_PS_DEVICE_ID XPAR_PS7_UART_1_DEVICE_ID
+/************************** Function Prototypes ******************************/
+int Uart_Init(XUartPs* Uart_Ps, u16 DeviceId);
+int Uart_Send(XUartPs* Uart_Ps, u8 *sendbuf, u32 length);
+//int Uart_Send(XUartPs* Uart_Ps, u8 *SendBuffer, u8 *RecvBuffer, int length);
+u32 Uart_Recv(XUartPs* Uart_Ps, u8 *recvbuf, u32 length);
+u32 Uart_send_receive_Normal(XUartPs* Uart_Ps,  u8 *RecvBuffer, int length);
+
+
+
+#endif /* SRC_USER_UART_H_ */

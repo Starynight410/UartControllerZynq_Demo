@@ -1,0 +1,115 @@
+#include "usr_uart.h"
+
+/************************** Function Definition ******************************/
+/*************************** Device Initialize *******************************/
+int Uart_Init(XUartPs* Uart_Ps, u16 DeviceId){
+	int Status;
+	XUartPs_Config *Config;
+
+	/*
+	 * Initialize the UART driver so that it's ready to use
+	 * Look up the configuration in the config table,
+	 * then initialize it.
+	 */
+	Config = XUartPs_LookupConfig(DeviceId);
+	if (NULL == Config) {
+		return XST_FAILURE;
+	}
+
+	Status = XUartPs_CfgInitialize(Uart_Ps, Config, Config->BaseAddress);
+	if (Status != XST_SUCCESS) {
+		return XST_FAILURE;
+	}
+
+	/* Perform a self-test to check hardware build. */
+	Status = XUartPs_SelfTest(Uart_Ps);
+	if (Status != XST_SUCCESS) {
+		return XST_FAILURE;
+	}
+
+	/* Set BaudRate */
+	XUartPs_SetBaudRate(Uart_Ps, 115200);
+
+	return XST_SUCCESS;
+}
+
+//--------------------------------------------------------------
+//                     UART数据发送函数
+//--------------------------------------------------------------
+int Uart_Send(XUartPs* Uart_Ps, u8 *SendBuffer, u8 *RecvBuffer, int length)
+{
+	u16 SentCount, RecvCount;
+
+	XUartPs_SetOperMode(Uart_Ps, XUARTPS_OPER_MODE_LOCAL_LOOP); //本地回环模式
+	// 发送缓冲区中的数据
+	SentCount = XUartPs_Send(Uart_Ps, SendBuffer, length);
+	if (SentCount != length) {
+		return XST_FAILURE;
+	}
+
+	// 如果UART正在发送数据则等待
+	while(XUartPs_IsSending(Uart_Ps));
+
+	// 接收数据，阻塞直到接收了全部数据
+	RecvCount = 0;
+	while(RecvCount < length) {
+		RecvCount += XUartPs_Recv(Uart_Ps, &RecvBuffer[RecvCount],
+				(length - RecvCount));
+	}
+
+	XUartPs_SetOperMode(Uart_Ps, XUARTPS_OPER_MODE_NORMAL); //正常模式
+	// 比较接收缓冲区与发送缓冲区中的内容
+	int result = memcmp(SendBuffer, RecvBuffer, length);
+	if (result != 0) {
+		xil_printf("UART Polled Mode Failed!\r\n");
+		return XST_FAILURE;
+	}
+	xil_printf("UART Polled Mode succeeded!\r\n");
+
+	return XST_SUCCESS;
+}
+
+///******************************* Date Send ***********************************/
+//int Uart_Send(XUartPs* Uart_Ps, u8 *sendbuf, int length){
+//	int SentCount = 0;
+//
+//	//while (SentCount < length - 1) {
+//	while (SentCount < length ) {
+//		/* Transmit the data */
+//		SentCount += XUartPs_Send(Uart_Ps,
+//					   &sendbuf[SentCount], 1);
+//	}
+//
+//	return SentCount;
+//}
+
+/******************************* Date Recv ***********************************/
+u32 Uart_Recv(XUartPs* Uart_Ps, u8 *recvbuf, u32 length){
+	u32 RecvCount = 0;
+	//u32 XUartPs_Recv(XUartPs *InstancePtr, u8 *BufferPtr, u32 NumBytes)
+	RecvCount = XUartPs_Recv(Uart_Ps, recvbuf, length);
+
+	return RecvCount;
+}
+
+u32 Uart_send_receive_Normal(XUartPs* Uart_Ps,  u8 *RecvBuffer, int length)
+{
+	//正常模式
+	XUartPs_SetOperMode(Uart_Ps,XUARTPS_OPER_MODE_NORMAL);
+	u16 RecvCount=0;
+	u16 SentCount=0;
+	//发送等待
+	while(XUartPs_IsSending(Uart_Ps));
+	//接收
+	while(RecvCount < length) {
+		RecvCount += XUartPs_Recv(Uart_Ps, &RecvBuffer[RecvCount],
+				(length - RecvCount));
+	}
+	SentCount = XUartPs_Send(Uart_Ps, RecvBuffer, length);
+	if (SentCount != length) {
+		xil_printf("UART Polled Mode failed!\r\n");
+		return XST_FAILURE;
+	}
+	xil_printf("UART Polled Mode succeeded!\r\n");
+	return XST_SUCCESS;
+}

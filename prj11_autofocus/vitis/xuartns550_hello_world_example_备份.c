@@ -1,0 +1,224 @@
+/******************************************************************************
+* Copyright (C) 2002 - 2021 Xilinx, Inc.  All rights reserved.
+* SPDX-License-Identifier: MIT
+******************************************************************************/
+
+/******************************************************************************/
+/**
+*
+* @file     xuartns550_hello_world_example.c
+*
+* This file contains a design example using the Uart 16450/550 driver
+* (XUartNs550) and hardware device using polled mode.
+*
+* @note     None.
+*
+* MODIFICATION HISTORY:
+* <pre>
+* Ver   Who  Date     Changes
+* ----- ---- -------- ---------------------------------------------------------
+* 1.00a jhl  05/13/02 First release
+* 1.00a sv   06/08/05 Minor changes to comply to Doxygen and coding guidelines
+* 2.00a ktn  10/20/09 Updated to use HAL processor APIs and minor modifications
+*		      as per coding guidelines.
+* 3.4   ms   01/23/17 Added xil_printf statement in main function to
+*                     ensure that "Successfully ran" and "Failed" strings
+*                     are available in all examples. This is a fix for
+*                     CR-965028.
+* </pre>
+******************************************************************************/
+
+/***************************** Include Files *********************************/
+
+#include "xparameters.h"
+#include "xuartns550.h"
+#include "xil_printf.h"
+#include  "sleep.h"
+#include "xgpiops.h"
+#include "xuartps.h"
+
+XGpioPs gXGpioLed1;
+XGpioPs gXGpioLed2;
+#define EMIOLED1    54
+#define EMIOLED2    55
+
+/************************** Constant Definitions *****************************/
+
+/*
+ * The following constants map to the XPAR parameters created in the
+ * xparameters.h file. They are defined here such that a user can easily
+ * change all the needed parameters in one place.
+ */
+#define UART_DEVICE_ID		XPAR_UARTNS550_0_DEVICE_ID
+
+/**************************** Type Definitions *******************************/
+
+
+/***************** Macros (Inline Functions) Definitions *********************/
+
+
+/************************** Function Prototypes ******************************/
+int UartNs550HelloWorldExample(u16 DeviceId);
+u8 order_rec();
+/************************** Variable Definitions *****************************/
+
+XUartNs550 UartNs550;		/* The instance of the UART Driver */
+
+/*****************************************************************************/
+/**
+* Main function to call the example.
+*
+*
+* @return
+*		- XST_FAILURE if the Test Failed.
+*		- A non-negative number indicating the number of
+*		characters sent.
+*
+* @note		None.
+*
+******************************************************************************/
+
+int main(void)
+{
+	int Status;
+
+	/*
+	 * Run the UartNs550 example, specify the the Device ID that is
+	 * generated in xparameters.h
+	 */
+
+
+	Status = UartNs550HelloWorldExample(UART_DEVICE_ID);
+
+	if (Status == XST_FAILURE) {
+		xil_printf("Uartns550 hello world Example Failed\r\n");
+		return XST_FAILURE;
+	}
+
+	xil_printf("Successfully ran Uartns550 hello world Example\r\n");
+	return Status;
+}
+
+
+/******************************************************************************/
+/**
+*
+* This function sends Hello World with the UART 16450/550 device and driver as
+* a design example. The purpose of this function is to illustrate how to use
+* the XUartNs550 driver.
+*
+* This function polls the UART and does not require the use of interrupts.
+*
+* @param	DeviceId is the XPAR_<UARTNS550_instance>_DEVICE_ID value from
+*		xparameters.h
+*
+* @return
+*		- XST_FAILURE if the UART driver could not be initialized
+*		successfully.
+*		- A non-negative number indicating the number of characters
+*		sent.
+*
+* @note		None.
+*
+****************************************************************************/
+//通信协议：$ w 0 1 a
+//w代表写
+//0为地址
+//1为数据
+//地址==1时为灯操作，数据为1时开灯，数据为0时关灯
+//地址==2时为写数据操作，
+
+//读数据时，返回格式为$ 2 b
+//读写命令空格都要计算在内
+
+u8 HelloWorld[11]="HelloWorld\n";
+u8 order_buf[9]={0};		//保存命令
+u8 order_cnt=0;				//数组计数器
+int UartNs550HelloWorldExample(u16 DeviceId)
+{
+	u8  sendbuf[5]={'$',' ',2,' ','b'};
+	u8  rec_cnt=0;
+	int SentCount = 0;
+	int Status;
+	XGpioPs_Config *ConfigPtr;
+
+    //GPIO LED 初始化
+    ConfigPtr = XGpioPs_LookupConfig(XPAR_XGPIOPS_0_DEVICE_ID);
+	Status = XGpioPs_CfgInitialize(&gXGpioLed1, ConfigPtr, ConfigPtr->BaseAddr);
+	if (Status != XST_SUCCESS)  return XST_FAILURE;
+	Status = XGpioPs_CfgInitialize(&gXGpioLed2, ConfigPtr, ConfigPtr->BaseAddr);
+	if (Status != XST_SUCCESS)  return XST_FAILURE;
+	XGpioPs_SetDirectionPin(&gXGpioLed1, EMIOLED1, 1);
+	XGpioPs_SetOutputEnablePin(&gXGpioLed1, EMIOLED1, 1);
+
+	XGpioPs_SetDirectionPin(&gXGpioLed2, EMIOLED2, 1);
+	XGpioPs_SetOutputEnablePin(&gXGpioLed2, EMIOLED2, 1);
+	
+	// Initialize the UartNs550 device so that it is ready to use
+	//波特率115200
+	Status = XUartNs550_Initialize(&UartNs550, DeviceId);
+	if (Status != XST_SUCCESS) {
+		return XST_FAILURE;
+	}
+	xil_printf("Initiate Uart and LED succeed\r\n");
+//	XGpioPs_WritePin(&gXGpioLed1, EMIOLED1, 1);	//手动点灯
+
+	while(1)
+	{
+//		 usleep(100);
+//		 XUartNs550_Send(&UartNs550,&HelloWorld[SentCount], sizeof(HelloWorld));
+
+		rec_cnt = order_rec();
+		if(rec_cnt==1)
+		{
+			rec_cnt = 0;
+			if(order_buf[2]=='w')			//写入命令
+			{
+				if(order_buf[4]=='1')		//操作灯命令
+				{
+					XGpioPs_WritePin(&gXGpioLed1, EMIOLED1, order_buf[6]);
+				}
+				else if(order_buf[4]=='2')	//写入数据
+				{
+					Xil_Out32((XPAR_AAVMMBASE_BASEADDR + 300), (order_buf[6]-0x30));
+				}
+			}
+			else if(order_buf[2]=='r')		//读取命令
+			{
+				sendbuf[2] = Xil_In32(XPAR_AAVMMBASE_BASEADDR + 300)+0x30;
+				XUartNs550_Send(&UartNs550,&sendbuf[0], sizeof(sendbuf));
+			}
+			memset(order_buf,0,sizeof(order_buf));
+		}
+		
+	
+	}
+
+
+	return SentCount;
+}
+
+
+//读取串口接收数据，每一个值都保存到全局数组order_buf中
+//接收完一条命令后返回1，其他返回0
+u8 order_rec()
+{
+	u8 rec_buf[1]={0};
+	u8 rec_mark=0;
+	rec_mark = XUartNs550_Recv(&UartNs550,&rec_buf[0],1);
+	if(rec_mark!=0)
+	{
+		order_buf[order_cnt]=rec_buf[0];
+		if(order_cnt==8)
+		{
+			order_cnt=0;
+			return 1;
+		}	
+		else
+		{
+			order_cnt++;
+			return 0;
+		}
+	}
+	return 0;
+}

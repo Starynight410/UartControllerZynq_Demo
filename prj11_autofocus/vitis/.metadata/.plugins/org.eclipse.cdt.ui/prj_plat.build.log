@@ -1,0 +1,21 @@
+17:47:05 **** Build of project prj_plat ****
+buildplatform.bat 49932 prj_plat  
+XSDB Server Channel: tcfchan#14
+Failed to generate the platform.
+Reason: Error: Qemu arguments File given  D:/SoftWare/Vivado2021.2/Vitis/2021.2/data/emulation/platforms/zynq/sw/a9_standalone/qemu/qemu_args.txt do not exist
+    invoked from within
+"::tcf::eval -progress {apply {{msg} {puts $msg}}} {tcf_send_command tcfchan#0 xsdb eval s es {{platform active prj_plat; platform generate }}}"
+    (procedure "::tcf::send_command" line 4)
+    invoked from within
+"tcf send_command $::xsdb::curchan xsdb eval s es [list "platform active $PLATFORM_NAME; platform generate $target"]"
+    invoked from within
+"if { $iswindows == 1 } {    
+
+    set XSDB_PORT [lindex $argv 0]
+    set PLATFORM_NAME [lindex $argv 1]
+    set arglen [llength $argv]
+    set lastind..."
+    (file "F:/Xilinx/Vitis/2022.2\scripts\vitis\util\buildplatform.tcl" line 11)
+
+17:47:07 Build Finished (took 1s.590ms)
+

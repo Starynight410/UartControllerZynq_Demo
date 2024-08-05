@@ -1,0 +1,58 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2022.2 (win64) Build 3671981 Fri Oct 14 05:00:03 MDT 2022
+| Date         : Tue Jul 30 17:58:41 2024
+| Host         : buaa203 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xc7z020clg484-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'design_1_axi_uart16550_0_1'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of design_1_axi_uart16550_0_1 (xilinx.com:ip:axi_uart16550:2.0) from (Rev. 27) to (Rev. 29)
+
+
+
+
+
+
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2022.2 (win64) Build 3671981 Fri Oct 14 05:00:03 MDT 2022
+| Date         : Tue Jul 30 17:58:41 2024
+| Host         : buaa203 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xc7z020clg484-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'design_1_axi_interconnect_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of design_1_axi_interconnect_0_0 (xilinx.com:ip:axi_interconnect:2.1) from (Rev. 26) to (Rev. 28)
+
+
+
+
+
+
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2022.2 (win64) Build 3671981 Fri Oct 14 05:00:03 MDT 2022
+| Date         : Tue Jul 30 17:58:41 2024
+| Host         : buaa203 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xc7z020clg484-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'design_1_axi_amm_bridge_0_1'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of design_1_axi_amm_bridge_0_1 (xilinx.com:ip:axi_amm_bridge:1.0) from (Rev. 15) to (Rev. 17)
+

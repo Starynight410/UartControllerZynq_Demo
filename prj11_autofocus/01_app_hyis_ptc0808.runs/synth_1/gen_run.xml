@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenRun Id="synth_1" LaunchPart="xc7z020clg484-2" LaunchTime="1722826220" LaunchIncrCheckpoint="$PSRCDIR/utils_1/imports/synth_1/IS_PTC_top.dcp" LaunchWriteIncrSynthDcp="true">
+  <File Type="PA-TCL" Name="IS_PTC_top.tcl"/>
+  <File Type="RDS-PROPCONSTRS" Name="IS_PTC_top_drc_synth.rpt"/>
+  <File Type="REPORTS-TCL" Name="IS_PTC_top_reports.tcl"/>
+  <File Type="RDS-RDS" Name="IS_PTC_top.vds"/>
+  <File Type="RDS-UTIL" Name="IS_PTC_top_utilization_synth.rpt"/>
+  <File Type="RDS-UTIL-PB" Name="IS_PTC_top_utilization_synth.pb"/>
+  <File Type="RDS-DCP" Name="IS_PTC_top.dcp"/>
+  <File Type="VDS-TIMINGSUMMARY" Name="IS_PTC_top_timing_summary_synth.rpt"/>
+  <File Type="VDS-TIMING-PB" Name="IS_PTC_top_timing_summary_synth.pb"/>
+  <FileSet Name="sources" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1" RelGenDir="$PGENDIR/sources_1">
+    <Filter Type="Srcs"/>
+    <File Path="$PSRCDIR/sources_1/bd/design_1/design_1.bd">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../../../4_IS_PTC0808_10/04_IS_PTC_230515/IS_PTC.srcs/sources_1/bd/design_1/design_1.bd"/>
+        <Attr Name="ImportTime" Val="1693965949"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PGENDIR/sources_1/bd/design_1/hdl/design_1_wrapper.v">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/IS_PTC_top.v">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../../../4_IS_PTC0808_10/04_IS_PTC_230515/IS_PTC.srcs/sources_1/new/IS_PTC_top.v"/>
+        <Attr Name="ImportTime" Val="1689841288"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/addr_cmd.v">
+      <FileInfo>
+        <Attr Name="AutoDisabled" Val="1"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <Config>
+      <Option Name="DesignMode" Val="RTL"/>
+      <Option Name="TopModule" Val="IS_PTC_top"/>
+      <Option Name="TopAutoSet" Val="TRUE"/>
+    </Config>
+  </FileSet>
+  <FileSet Name="constrs_in" Type="Constrs" RelSrcDir="$PSRCDIR/constrs_2">
+    <File Path="$PSRCDIR/constrs_2/new/IO_ctrl.xdc">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../../../4_IS_PTC0808_10/04_IS_PTC_230515/IS_PTC.srcs/constrs_2/new/IO_ctrl.xdc"/>
+        <Attr Name="ImportTime" Val="1692242448"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+      </FileInfo>
+    </File>
+    <Config>
+      <Option Name="TargetConstrsFile" Val="$PSRCDIR/constrs_2/new/IO_ctrl.xdc"/>
+      <Option Name="ConstrsType" Val="XDC"/>
+    </Config>
+  </FileSet>
+  <FileSet Name="utils" Type="Utils" RelSrcDir="$PSRCDIR/utils_1">
+    <Filter Type="Utils"/>
+    <File Path="$PSRCDIR/utils_1/imports/synth_1/IS_PTC_top.dcp">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../../../4_IS_PTC0808_10/04_IS_PTC_230515/IS_PTC.srcs/utils_1/imports/synth_1/IS_PTC_top.dcp"/>
+        <Attr Name="ImportTime" Val="1689219226"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedInSteps" Val="impl_1"/>
+        <Attr Name="UsedInSteps" Val="synth_1"/>
+        <Attr Name="AutoDcp" Val="1"/>
+      </FileInfo>
+    </File>
+    <Config>
+      <Option Name="TopAutoSet" Val="TRUE"/>
+    </Config>
+  </FileSet>
+  <Strategy Version="1" Minor="2">
+    <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2022">
+      <Desc>Vivado Synthesis Defaults</Desc>
+    </StratHandle>
+    <Step Id="synth_design"/>
+  </Strategy>
+  <BlockFileSet Type="BlockSrcs" Name="design_1_auto_pc_0"/>
+  <BlockFileSet Type="BlockSrcs" Name="design_1_processing_system7_0_0"/>
+  <BlockFileSet Type="BlockSrcs" Name="design_1_proc_sys_reset_0_0"/>
+  <BlockFileSet Type="BlockSrcs" Name="design_1_axi_uart16550_0_1"/>
+  <BlockFileSet Type="BlockSrcs" Name="design_1_auto_pc_1"/>
+  <BlockFileSet Type="BlockSrcs" Name="design_1_axi_amm_bridge_0_1"/>
+  <BlockFileSet Type="BlockSrcs" Name="design_1_xbar_0"/>
+  <BlockFileSet Type="BlockSrcs" Name="design_1_spi_regmap_top_0_0"/>
+  <BlockFileSet Type="BlockSrcs" Name="design_1_ila_0_0"/>
+  <BlockFileSet Type="BlockSrcs" Name="design_1_auto_pc_2"/>
+</GenRun>

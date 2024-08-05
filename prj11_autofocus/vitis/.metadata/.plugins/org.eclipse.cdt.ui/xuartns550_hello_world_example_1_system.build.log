@@ -1,0 +1,10 @@
+17:51:13 **** Incremental Build of configuration Release for project xuartns550_hello_world_example_1_system ****
+make all 
+Generating bif file for the system project
+generate_system_bif.bat 63409 E:/prj11_autofocus/vitis/Prj_platform/export/Prj_platform/Prj_platform.xpfm standalone_domain E:/prj11_autofocus/vitis/xuartns550_hello_world_example_1_system/Release/system.bif
+sdcard_gen --xpfm E:/prj11_autofocus/vitis/Prj_platform/export/Prj_platform/Prj_platform.xpfm --sys_config Prj_platform --bif E:/prj11_autofocus/vitis/xuartns550_hello_world_example_1_system/Release/system.bif --bitstream E:/prj11_autofocus/vitis/xuartns550_hello_world_example_1/_ide/bitstream/IS_PTC_top.bit --elf E:/prj11_autofocus/vitis/xuartns550_hello_world_example_1/Release/xuartns550_hello_world_example_1.elf,ps7_cortexa9_0
+creating BOOT.BIN using E:/prj11_autofocus/vitis/xuartns550_hello_world_example_1/_ide/bitstream/IS_PTC_top.bit
+Running F:/Xilinx/Vitis/2022.2/bin/bootgen  -image E:/prj11_autofocus/vitis/xuartns550_hello_world_example_1_system/Release/sd_card_temp/boot.bif -w -o i BOOT.BIN
+
+17:51:18 Build Finished (took 5s.227ms)
+
