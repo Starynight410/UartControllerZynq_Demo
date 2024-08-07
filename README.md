@@ -4,6 +4,10 @@
 
 Vivado/Vitis 2022.2
 
+# 工程列表
+
+SingleSerialPort：Uart控制上位机、prj11_autofocus：ZYNQ系统
+
 # 实现功能
 
 该项目搭建了基于Zynq的Uart数据收发系统，在PS端实现控制LED的亮灭、SPI发送、IIC读写EEPROM，并通过PL端进行结果验证；上位机端实现了串口功能、SPI参数配置、LED控制。此项目可用作原型系统实现PC和PS端更复杂的数据交互。
