@@ -18,3 +18,7 @@ SingleSerialPort：Uart控制上位机、prj11_autofocus：ZYNQ系统、PL_SpiPr
 对其中的SPI发送进行测试，上位机配置参数分别为：1、2、3，配置数据SPI发送的ila结果：
 ![image](./image/test.png)
 
+# SPI收发模块
+PL中实现了SPI数据收发模块，将SPI输入并完成处理，之后输出。仿真时序：
+
+![image](./image/SPI.png)
