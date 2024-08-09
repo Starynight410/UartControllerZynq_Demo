@@ -6,7 +6,7 @@ Vivado/Vitis 2022.2
 
 # 工程列表
 
-SingleSerialPort：Uart控制上位机、prj11_autofocus：ZYNQ系统
+SingleSerialPort：Uart控制上位机、prj11_autofocus：ZYNQ系统、PL_SpiProcess：SPI收发及处理模块
 
 # 实现功能
 
@@ -17,3 +17,4 @@ SingleSerialPort：Uart控制上位机、prj11_autofocus：ZYNQ系统
 
 对其中的SPI发送进行测试，上位机配置参数分别为：1、2、3，配置数据SPI发送的ila结果：
 ![image](./image/test.png)
+
