@@ -22,18 +22,19 @@
 
 module tb_spi_process;
 
-parameter 				P_DATA_IN_WIDTH			=	1;  //ÊäÈëÊı¾İÎ»¿í
-parameter 				P_DATA_TEMP_WIDTH  		=   8; //×é×°µÄÊäÈëÊı¾İÎ»¿í
+parameter 				P_DATA_IN_WIDTH			=   1;  //è¾“å…¥æ•°æ®ä½å®½
+parameter 				P_DATA_TEMP_WIDTH  		=   8; //ç»„è£…çš„è¾“å…¥æ•°æ®ä½å®½
 
-reg								clk			;
-reg							    sclk		;
+reg							    clk		    ;
+reg							    sclk	    ;
 reg							    cs_n	    ;
 reg							    rst_n	    ;
 reg [P_DATA_IN_WIDTH-1:0]       mosi_7_0    ;	
 wire [P_DATA_TEMP_WIDTH-1:0]    dout        ;
 wire                            rd_en       ;
-wire							sclk_1		; //¸ù¾İcs_nµÄ×´Ì¬ÓĞÍ£ĞªµÄÊ±ÖÓsclk_1
-reg [8:0] csn_cnt;
+wire				sclk_1      ; //æ ¹æ®cs_nçš„çŠ¶æ€æœ‰åœæ­‡çš„æ—¶é’Ÿsclk_1
+reg [8:0]                       csn_cnt     ;
+reg [2:0]                       cnt         ; // å¾ªç¯0001 0001
 
 // output
 wire    SPI0_MISO_I;
@@ -43,7 +44,7 @@ wire    SPI0_SS_I;
 //the clk generation
 initial begin
 	clk = 1;
-    cs_n = 1'b1;
+        cs_n = 1'b1;
 	sclk = 1;
 	rst_n = 1'b0;
 	csn_cnt = 0;
@@ -51,20 +52,23 @@ initial begin
 	#5 cs_n = 1'b0;
   end
 
-always #5 clk = ~clk;       //100MHz clk£¬ ¶ÁÊıÎª10MHz²ÉÑù
+always #10 clk = ~clk;      //50MHz clk
 always #200 sclk = ~sclk;   //2.5MHz SPI 
 
 initial begin
     mosi_7_0 <= 1;
+    cnt <= 0;
     #160
     mosi_7_0 <= 1;
     repeat(1000) begin
         @(posedge sclk_1) begin
-            if (mosi_7_0 == 0) begin
+            if ((cnt == 3) && (mosi_7_0 == 0)) begin
                 mosi_7_0 <= 1;
+                cnt <= 0;
             end
             else begin
                 mosi_7_0 <= 0;
+                cnt <= cnt + 1;
             end
         end
     end
@@ -99,8 +103,8 @@ spi_process#(
 		.P_DATA_IN_WIDTH(P_DATA_IN_WIDTH),
 		.P_DATA_TEMP_WIDTH(P_DATA_TEMP_WIDTH)
 ) u_spi_process (
-	.clk           (clk         ),
-	.rst_n         (rst_n       ),
+    .clk           (clk         ),
+    .rst_n         (rst_n       ),
     .SPI0_MOSI_O   (mosi_7_0    ),
     .SPI0_SCLK_O   (sclk_1      ),
     .SPI0_SS_O     (cs_n        ),
