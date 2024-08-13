@@ -20,16 +20,16 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-//²ÉÓÃSPIÄ£Ê½0£ºÉÏÉıÑØ²ÉÑùÊı¾İ£¬ÏÂ½µÑØÇĞ»»Êı¾İ
+//é‡‡ç”¨SPIæ¨¡å¼0ï¼šä¸Šå‡æ²¿é‡‡æ ·æ•°æ®ï¼Œä¸‹é™æ²¿åˆ‡æ¢æ•°æ®
 module spi_send#(
-    parameter 		P_DATA_IN_WIDTH			=	1, //ÊäÈëÊı¾İÎ»¿í
-    parameter 		P_DATA_TEMP_WIDTH  		=   8  //Êä³öÊı¾İÎ»¿í 
+    parameter 		P_DATA_IN_WIDTH			=	1, //è¾“å…¥æ•°æ®ä½å®½
+    parameter 		P_DATA_TEMP_WIDTH  		=   8  //è¾“å‡ºæ•°æ®ä½å®½ 
 )(
     input                           clk,
     input                           rst_n,
     
     input                           valid,
-    input  [P_DATA_TEMP_WIDTH-1:0]  data_i,   //·¢ËÍÊı¾İ
+    input  [P_DATA_TEMP_WIDTH-1:0]  data_i,   //å‘é€æ•°æ®
     
     // signal to ps
     output [P_DATA_IN_WIDTH-1:0]    SPI0_MISO_I,    
@@ -42,9 +42,9 @@ localparam		LP_WIDTH_RATIO	=   (P_DATA_TEMP_WIDTH/P_DATA_IN_WIDTH);
 
 reg  valid_s, valid_d;
 wire valid_posedge;
-reg [7:0] send_cnt; // ¼ÇÂ¼·¢ËÍ×Ö½ÚÊı£¬À­¸ßSS
+reg [7:0] send_cnt; // è®°å½•å‘é€å­—èŠ‚æ•°ï¼Œæ‹‰é«˜SS
 
-//ÌáÈ¡±ßÑØ
+//æå–è¾¹æ²¿
 always @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
         valid_s <= 0;
@@ -67,42 +67,42 @@ reg [P_DATA_IN_WIDTH-1:0] SPI0_MISO_I_REG;
 reg [P_DATA_TEMP_WIDTH-1:0] data;
 
 assign SPI0_MISO_I = SPI0_MISO_I_REG;
-assign SPI0_SCLK_I = SPI0_SCLK_I_REG;
-assign SPI0_SS_I = SPI0_SS_I_REG;
+assign SPI0_SCLK_I = SPI0_SCLK_I_REG_d2;
+assign SPI0_SS_I = SPI0_SS_I_REG_d2;
      
-/*¹¹Ôì×´Ì¬»ú*/
+/*æ„é€ çŠ¶æ€æœº*/
 reg [4:0] state;
-localparam D7_State     = 5'd0; //·¢ËÍ×î¸ßÎ»Êı¾İ-×´Ì¬
+localparam D7_State     = 5'd0; //å‘é€æœ€é«˜ä½æ•°æ®-çŠ¶æ€
 localparam D6_State     = 5'd2;
 localparam D5_State     = 5'd4;
 localparam D4_State     = 5'd6;
 localparam D3_State     = 5'd8;
 localparam D2_State     = 5'd10;
 localparam D1_State     = 5'd12;
-localparam D0_State     = 5'd14; //·¢ËÍ×îµÍÎ»Êı¾İ-×´Ì¬
+localparam D0_State     = 5'd14; //å‘é€æœ€ä½ä½æ•°æ®-çŠ¶æ€
 localparam IDLE         = 5'd16; 
-localparam STORE_DATA   = 5'd18; //»º´æÓĞĞ§Êı¾İ 
+localparam STORE_DATA   = 5'd18; //ç¼“å­˜æœ‰æ•ˆæ•°æ® 
 
 always@(posedge clk or negedge rst_n)begin
-    if(!rst_n)//¸´Î»
+    if(!rst_n)//å¤ä½
     begin
-        SPI0_SCLK_I_REG <= 1'b0;    //SPI0_SCLK_I_REG³õÊ¼µçÆ½ÎªµÍ
-        SPI0_SS_I_REG <= 1'b1;      //SPI0_SS_I_REG³õÊ¼µçÆ½Îª¸ß
-        SPI0_MISO_I_REG <= 1'b0;    //SPI0_MISO_I_REG³õÊ¼µçÆ½ÎªµÍ
+        SPI0_SCLK_I_REG <= 1'b0;    //SPI0_SCLK_I_REGåˆå§‹ç”µå¹³ä¸ºä½
+        SPI0_SS_I_REG <= 1'b1;      //SPI0_SS_I_REGåˆå§‹ç”µå¹³ä¸ºé«˜
+        SPI0_MISO_I_REG <= 1'b0;    //SPI0_MISO_I_REGåˆå§‹ç”µå¹³ä¸ºä½
         data <= 8'b0;
         state <= IDLE;
     end
-    else begin  //²úÉúSPIÊ±Ğò
+    else begin  //äº§ç”ŸSPIæ—¶åº
         if(send_cnt==0) begin
             SPI0_SS_I_REG <= 1'b1;
         end
         else begin
-            SPI0_SS_I_REG <= 1'b0;//SPI0_SS_I_REGÀ­µÍ×¼±¸Êı¾İ´«Êä
+            SPI0_SS_I_REG <= 1'b0;//SPI0_SS_I_REGæ‹‰ä½å‡†å¤‡æ•°æ®ä¼ è¾“
         end
         case(state)
-            5'd1,5'd3,5'd5,5'd7,5'd9,5'd11,5'd13,5'd15://Ã¿´Î·ÅÖÃÊı¾İÍê±Ïºó ÔÚ´ËÀ­¸ßÊ±ÖÓÏß£¬±ãÓÚÏÂ´ÎµÄÏÂ½µÑØ²úÉú
+            5'd1,5'd3,5'd5,5'd7,5'd9,5'd11,5'd13,5'd15://æ¯æ¬¡æ”¾ç½®æ•°æ®å®Œæ¯•å åœ¨æ­¤æ‹‰é«˜æ—¶é’Ÿçº¿ï¼Œä¾¿äºä¸‹æ¬¡çš„ä¸‹é™æ²¿äº§ç”Ÿ
             begin
-                SPI0_SCLK_I_REG <= 1'b1;//×¼±¸ÔÚÏÂ½µÑØ·ÅÖÃÊı¾İ£¬ÌáÇ°½«SCKÀ­¸ß
+                SPI0_SCLK_I_REG <= 1'b1;//å‡†å¤‡åœ¨ä¸‹é™æ²¿æ”¾ç½®æ•°æ®ï¼Œæå‰å°†SCKæ‹‰é«˜
                 state <= state + 5'd1;
             end
            
@@ -117,71 +117,90 @@ always@(posedge clk or negedge rst_n)begin
             
             STORE_DATA:
             begin
-                data <= data_i; //»º´æÊı¾İ
-                SPI0_SCLK_I_REG <= 1'b1;//×¼±¸ÔÚÏÂ½µÑØ·ÅÖÃÊı¾İ£¬ÌáÇ°½«SCKÀ­¸ß
+                data <= data_i; //ç¼“å­˜æ•°æ®
+                SPI0_SCLK_I_REG <= 1'b1;//å‡†å¤‡åœ¨ä¸‹é™æ²¿æ”¾ç½®æ•°æ®ï¼Œæå‰å°†SCKæ‹‰é«˜
                 state <= D7_State;
             end
             
-            D7_State://µÚ7Î»Êı¾İ·¢ËÍ×´Ì¬
+            D7_State://ç¬¬7ä½æ•°æ®å‘é€çŠ¶æ€
             begin
-                SPI0_MISO_I_REG <= data[7];//D7Êı¾İ
-                SPI0_SCLK_I_REG <= 1'b0;//ÔÚÏÂ½µÑØ·ÅÖÃÊı¾İ
+                SPI0_MISO_I_REG <= data[7];//D7æ•°æ®
+                SPI0_SCLK_I_REG <= 1'b0;//åœ¨ä¸‹é™æ²¿æ”¾ç½®æ•°æ®
                 state <= state + 5'd1;
             end
             
-            D6_State://µÚ6Î»Êı¾İ·¢ËÍ×´Ì¬
+            D6_State://ç¬¬6ä½æ•°æ®å‘é€çŠ¶æ€
             begin
-                 SPI0_MISO_I_REG <= data[6];//D6Êı¾İ
-                 SPI0_SCLK_I_REG <= 1'b0;//ÔÚÏÂ½µÑØ·ÅÖÃÊı¾İ
+                 SPI0_MISO_I_REG <= data[6];//D6æ•°æ®
+                 SPI0_SCLK_I_REG <= 1'b0;//åœ¨ä¸‹é™æ²¿æ”¾ç½®æ•°æ®
                  state <= state + 5'd1;
             end
             
-            D5_State://µÚ5Î»Êı¾İ·¢ËÍ×´Ì¬
+            D5_State://ç¬¬5ä½æ•°æ®å‘é€çŠ¶æ€
             begin
-                 SPI0_MISO_I_REG <= data[5];//D5Êı¾İ
-                 SPI0_SCLK_I_REG <= 1'b0;//ÔÚÏÂ½µÑØ·ÅÖÃÊı¾İ
+                 SPI0_MISO_I_REG <= data[5];//D5æ•°æ®
+                 SPI0_SCLK_I_REG <= 1'b0;//åœ¨ä¸‹é™æ²¿æ”¾ç½®æ•°æ®
                  state <= state + 5'd1;
             end
             
-            D4_State://µÚ4Î»Êı¾İ·¢ËÍ×´Ì¬
+            D4_State://ç¬¬4ä½æ•°æ®å‘é€çŠ¶æ€
             begin
-                 SPI0_MISO_I_REG <= data[4];//D4Êı¾İ
-                 SPI0_SCLK_I_REG <= 1'b0;//ÔÚÏÂ½µÑØ·ÅÖÃÊı¾İ
+                 SPI0_MISO_I_REG <= data[4];//D4æ•°æ®
+                 SPI0_SCLK_I_REG <= 1'b0;//åœ¨ä¸‹é™æ²¿æ”¾ç½®æ•°æ®
                  state <= state + 5'd1;
             end
             
-            D3_State://µÚ3Î»Êı¾İ·¢ËÍ×´Ì¬
+            D3_State://ç¬¬3ä½æ•°æ®å‘é€çŠ¶æ€
             begin
-                 SPI0_MISO_I_REG <= data[3];//D3Êı¾İ
-                 SPI0_SCLK_I_REG <= 1'b0;//ÔÚÏÂ½µÑØ·ÅÖÃÊı¾İ
+                 SPI0_MISO_I_REG <= data[3];//D3æ•°æ®
+                 SPI0_SCLK_I_REG <= 1'b0;//åœ¨ä¸‹é™æ²¿æ”¾ç½®æ•°æ®
                  state <= state + 5'd1;
             end
             
-            D2_State://µÚ2Î»Êı¾İ·¢ËÍ×´Ì¬
+            D2_State://ç¬¬2ä½æ•°æ®å‘é€çŠ¶æ€
             begin
-                 SPI0_MISO_I_REG <= data[2];//D2Êı¾İ
-                 SPI0_SCLK_I_REG <= 1'b0;//ÔÚÏÂ½µÑØ·ÅÖÃÊı¾İ
+                 SPI0_MISO_I_REG <= data[2];//D2æ•°æ®
+                 SPI0_SCLK_I_REG <= 1'b0;//åœ¨ä¸‹é™æ²¿æ”¾ç½®æ•°æ®
                  state <= state + 5'd1;
             end
             
-            D1_State://µÚ1Î»Êı¾İ·¢ËÍ×´Ì¬
+            D1_State://ç¬¬1ä½æ•°æ®å‘é€çŠ¶æ€
             begin
-                 SPI0_MISO_I_REG <= data[1];//D1Êı¾İ
-                 SPI0_SCLK_I_REG <= 1'b0;//ÔÚÏÂ½µÑØ·ÅÖÃÊı¾İ
+                 SPI0_MISO_I_REG <= data[1];//D1æ•°æ®
+                 SPI0_SCLK_I_REG <= 1'b0;//åœ¨ä¸‹é™æ²¿æ”¾ç½®æ•°æ®
                  state <= state + 5'd1;
             end
             
-            D0_State://µÚ0Î»Êı¾İ·¢ËÍ×´Ì¬
+            D0_State://ç¬¬0ä½æ•°æ®å‘é€çŠ¶æ€
             begin
-                 SPI0_MISO_I_REG <= data[0];//D0Êı¾İ
-                 SPI0_SCLK_I_REG <= 1'b0;//ÔÚÏÂ½µÑØ·ÅÖÃÊı¾İ
-                 SPI0_SS_I_REG <= 1'b1;//´Ë×´Ì¬À­¸ßÒ»¸öÖÜÆÚSS×÷Îªµ¥´Î´«Êä½áÎ²
+                 SPI0_MISO_I_REG <= data[0];//D0æ•°æ®
+                 SPI0_SCLK_I_REG <= 1'b0;//åœ¨ä¸‹é™æ²¿æ”¾ç½®æ•°æ®
+                 SPI0_SS_I_REG <= 1'b1;//æ­¤çŠ¶æ€æ‹‰é«˜ä¸€ä¸ªå‘¨æœŸSSä½œä¸ºå•æ¬¡ä¼ è¾“ç»“å°¾
                  state <= IDLE;
             end
             
             default: state <= IDLE;
         endcase
     end
+end
+
+reg SPI0_SCLK_I_REG_d1, SPI0_SCLK_I_REG_d2;
+reg SPI0_SS_I_REG_d1, SPI0_SS_I_REG_d2;
+
+// å¯¹sclkï¼Œcsnæ‰“æ‹å¯¹å…¶å‘é€
+always@(posedge clk or negedge rst_n)begin  
+	if(!rst_n)begin                            
+		SPI0_SCLK_I_REG_d1 <= 1'b0;
+		SPI0_SCLK_I_REG_d2 <= 1'b0;
+        SPI0_SS_I_REG_d1 <= 1'b0;
+        SPI0_SS_I_REG_d2 <= 1'b0;
+	end
+	else begin
+		SPI0_SCLK_I_REG_d1 <= SPI0_SCLK_I_REG;
+		SPI0_SCLK_I_REG_d2 <= SPI0_SCLK_I_REG_d1;
+		SPI0_SS_I_REG_d1 <= SPI0_SS_I_REG;
+		SPI0_SS_I_REG_d2 <= SPI0_SS_I_REG_d1;
+	end		
 end
 
 ila_2 ila_spi_send (
