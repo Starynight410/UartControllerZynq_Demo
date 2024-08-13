@@ -192,8 +192,8 @@ always@(posedge clk or negedge rst_n)begin
 	if(!rst_n)begin                            
 		SPI0_SCLK_I_REG_d1 <= 1'b0;
 		SPI0_SCLK_I_REG_d2 <= 1'b0;
-        SPI0_SS_I_REG_d1 <= 1'b0;
-        SPI0_SS_I_REG_d2 <= 1'b0;
+        	SPI0_SS_I_REG_d1 <= 1'b0;
+        	SPI0_SS_I_REG_d2 <= 1'b0;
 	end
 	else begin
 		SPI0_SCLK_I_REG_d1 <= SPI0_SCLK_I_REG;
