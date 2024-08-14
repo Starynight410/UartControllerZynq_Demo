@@ -21,6 +21,8 @@ SingleSerialPort：Uart控制上位机、prj11_autofocus：ZYNQ系统、PL_SpiPr
 ![image](./image/test.png)
 
 # SPI收发模块
-PL中实现了SPI数据收发模块，将SPI输入并完成处理，之后输出。仿真时序：
+PL中实现了SPI数据收发模块，作为slave接收来自ps的SPI数据，完成某项逻辑运算，之后作为master输出。上位机发送：1、2、3，PL端SPI模块的收发ila结果：
 
-![image](./image/SPI.png)
+![image](./image/SPI_0.png)
+
+![image](./image/SPI_1.png)
