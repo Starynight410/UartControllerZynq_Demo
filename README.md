@@ -1,3 +1,5 @@
+更新版本链接：https://github.com/Starynight410/SPILoopZynq_Demo
+
 利用Uart实现PC与Zynq PS端的数据交互，工程包含两部分：FPGA程序+上位机。
 
 # 开发环境
